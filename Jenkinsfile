@@ -23,5 +23,15 @@ pipeline {
                 sh "./gradlew jacocoTestCoverageVerification"
             }
         }
+
+        stage ("Package") {
+            steps {
+                sh "./gradlew build"
+            }
+        }
+
+        stage ("Docker build") {
+            sh "docker build -t eeochoa/calculator ."
+        }
     }
 }

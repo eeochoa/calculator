@@ -31,7 +31,10 @@ pipeline {
         }
 
         stage ("Docker build") {
-            sh "docker build -t eeochoa/calculator ."
+            steps{
+                sh "docker build -t eeochoa/calculator ."
+            }
+            
         }
     }
 }

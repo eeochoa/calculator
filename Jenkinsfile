@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    stages{
+    stages {
         stage ("Compile") {
             steps {
                 sh "./gradlew compileJava"
@@ -31,9 +31,33 @@ pipeline {
         }
 
         stage ("Docker build") {
-            steps{
+            steps {
                 sh "docker build -t eeochoa/calculator ."
             }
+        }
+
+        stage ("Docker push") {
+            steps {
+                sh "docker push eeochoa/calculator"
+            }
+        }
+
+        stage ("Deploy") {
+            steps {
+                sh "docker run -d --rm -p 8765:8080 --name calculator eeochoa/calculator"
+            }
+        }
+
+        stage ("Sleep") {
+            steps {
+                sleep 240
+            }
+        }
+    }
+
+    post {
+        always {
+            sh "docker stop calculator"
         }
     }
 }

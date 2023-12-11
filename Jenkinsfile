@@ -31,16 +31,9 @@ pipeline {
         }
 
         stage ("Docker build") {
-        agent {
-            docker {
-                image 'leszko/jenkins-docker-slave'
-                args '--privileged'
-            }
-        }
             steps{
                 sh "docker build -t eeochoa/calculator ."
             }
-            
         }
     }
 }

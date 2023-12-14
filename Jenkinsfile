@@ -50,6 +50,7 @@ pipeline {
                         sh "docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD}"
 
                         sh "docker push eeochoa/calculator"
+                    }
                 }
             }
         }

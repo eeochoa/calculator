@@ -1,5 +1,10 @@
 pipeline {
     agent any
+    environment {
+        // Define the Docker Hub credentials ID
+        DOCKERHUB_CREDENTIALS = '3f33ee93-1577-4e66-892d-c92692cf66d9'
+    }
+
     stages {
         stage ("Compile") {
             steps {
@@ -38,7 +43,14 @@ pipeline {
 
         stage ("Docker push") {
             steps {
-                sh "docker push eeochoa/calculator"
+                script {
+                    // Push the Docker image to Docker Hub using credentials
+                    withCredentials([usernamePassword(credentialsId: DOCKERHUB_CREDENTIALS, passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
+                        // Login to Docker Hub
+                        sh "docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD}"
+
+                        sh "docker push eeochoa/calculator"
+                }
             }
         }
 
